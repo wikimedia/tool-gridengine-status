@@ -33,7 +33,7 @@
       <td class="jobstate">{{ job.queue|capitalize }} / {{ job.state|capitalize }}</td>
       <td class="jobtime">{{ job.submit|date("Y-m-d H:i:s") }}</td>
       <td class="jobcpu">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}n/a{% endif %}</td>
-      <td class="jobvmem">{% if job.vmem is not empty %}{{ job.vmem|humanmem }}/{{ job.h_vmem|humanmem }}
+      <td class="jobvmem">{% if job.vmem is not empty %}{{ (job.vmem / 1024 / 1024)|humanmem }}/{{ (job.h_vmem / 1024 / 1024)|humanmem }}
         {% if job.maxvmem > job.vmem %}(peak {{ (job.maxvmem / 1024 / 1024)|humanmem }}){% endif %}
         {% endif %}</td>
     </tr>
