@@ -81,8 +81,8 @@ class Qstat {
 		$hosts = [];
 		$xml = $this->execAndParse( self::CMD_QHOST );
 		foreach ( $xml->host as $xhost ) {
-			list( $hname, $_ ) = explode(
-				'.', (string) $xhost->attributes()->name, 2 );
+			$parts = explode( '.', (string) $xhost->attributes()->name, 2 );
+			$hname = $parts[0];
 			if ( $hname !== 'global' ) {
 				$host = [
 					'name'   => $hname,
