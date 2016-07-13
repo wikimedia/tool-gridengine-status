@@ -1,0 +1,18 @@
+<script src="/admin/libs/jquery.js"></script>
+<script src="/admin/libs/jquery.tablesorter.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".tablesorter").tablesorter({
+		sortList: [[0,0]],
+		// initialize zebra striping of the table
+		widgets: ["zebra"],
+		// change the default striping class names
+		// updated in v2.1 to use widgetOptions.zebra = ["even", "odd"]
+		// widgetZebra: { css: [ "normal-row", "alt-row" ] } still works
+		widgetOptions : {
+			zebra : [ "normal-row", "alt-row" ]
+		}
+	});
+});
+</script>
+
