@@ -25,7 +25,7 @@ use SimpleXMLElement;
 class Qstat {
 
 	const CMD_QSTAT = "/usr/bin/qstat -xml -j '*' | /bin/sed -e 's/JATASK:[^>]*/jatask/g'";
-	const CMD_QHOST = '/usr/bin/qhost -xml -j -f h_vmem';
+	const CMD_QHOST = '/usr/bin/qhost -xml -j -F h_vmem';
 
 	/**
 	 * Get a list of jobs submitted to the grid.
