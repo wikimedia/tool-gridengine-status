@@ -1,0 +1,37 @@
+{% set lang = i18nCtx.getCurrentLanguage %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <meta http-equiv="Content-language" content="{{ lang }}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes, width=device-width">
+    <title>{% block title %}{{ 'header-title'|message }}{% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!--[if lt IE 7]><style media="screen" type="text/css"> .col1 { width:100%; } </style> <![endif]-->
+    {% block css %}{% endblock css %}
+  </head>
+  <body>
+    <div class="colmask leftmenu"><div class="colright">
+        <div class="col1wrap"><div class="col1">
+            {% block pre_content %}{% endblock pre_content %}
+            {% block content %}<p>{{ app.request.getPath }}: Your message here.</p>{% endblock content %}
+            {% block post_content %}{% endblock post_content %}
+        </div></div>
+        <div class="col2">
+          <div id="logo"><a href="/"><img src="/Tool_Labs_logo_thumb.png" width="122" height="138" alt="Wikitech and Wikimedia Labs"></a></div>
+          <ul>
+            <li><a href="/?list">Tools</a></li>
+            <li><a href="/?status">Status</a></li>
+            <li><a href="/?Privacy">Privacy policy</a></li>
+          </ul>
+          <em>Maintainers:</em>
+          <ul>
+            <li><a href="/?Help">Help</a></li>
+            <li><a href="/?Rules">Rules</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+{
+	"name": "tools/gridengine-status",
+	"license": "GPL-3.0+",
+	"homepage": "https://tools.wmflabs.org/gridengine-status/",
+	"require": {
+		"wikimedia/slimapp": "dev-master",
+		"php": ">=5.5.9"
+	},
+	"autoload": {
+		"psr-4": {
+			"Tools\\GridEngineStatus\\": "src/"
+		}
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "~0.9",
+		"phpunit/phpunit": "~4.8|~5.0",
+		"mediawiki/mediawiki-codesniffer": "0.7.2"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tools\\GridEngineStatus\\": "tests/"
+		}
+	},
+	"config": {
+		"autoloader-suffix": "_tools_ges",
+		"optimize-autoloader": true,
+		"preferred-install": "dist"
+	},
+	"scripts": {
+		"lint": "parallel-lint . --exclude vendor",
+		"phpcs": "phpcs",
+		"fix": "phpcbf",
+		"phpunit": "phpunit",
+		"test": [
+			"composer lint",
+			"composer phpunit",
+			"composer phpcs"
+		]
+	}
+}

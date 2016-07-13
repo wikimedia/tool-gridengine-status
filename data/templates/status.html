@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Wikimedia Tool Labs</h1>
+<p>This is the web server for the Tool Labs project, the home of community-maintained external tools supporting Wikimedia projects and their users.</p>
+<h2>Grid Status</h2>
+
+{% for hostname, host in hosts %}
+<div class="hostline">
+  <span class="hostname">{{ hostname }}</span>
+  <b>Load:</b> {{ host.load }}%
+  <b>Memory:</b> {{ host.mem }}%
+  {% if host.vmem > 0 %}<b>Free vmem:</b> {{ host.vmem|humanmem }}{% endif %}
+</div>
+<table class="hostjobs tablesorter">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>Tool</th>
+      <th>State</th>
+      <th>Time</th>
+      <th>CPU</th>
+      <th>VMEM</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for jobid, job in host.jobs %}
+    <tr class="jobline-{{ job.state }}">
+      <td class="jobno">{{ jobid }}</td>
+      <td class="jobname">{{ job.name }}</td>
+      <td class="jobtool"><a href="/?tool={{ job.tool }}">{{ job.tool }}</a></td>
+      <td class="jobstate">{{ job.queue|capitalize }} / {{ job.state|capitalize }}</td>
+      <td class="jobtime">{{ job.submit|date("%F %T") }}</td>
+      <td class="jobcpu">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}n/a{% endif %}</td>
+      <td class="jobvmem">{% if job.vmem is not empty %}{{ job.vmem|humanmem }}/{{ job.h_vmem|humanmem }}
+        {% if job.maxvmem > job.vmem %}(peak {{ (job.maxvmem / 1024 / 1024)|humanmem }}){% endif %}
+        {% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+{% endblock content %}
