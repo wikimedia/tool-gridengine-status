@@ -35,7 +35,10 @@ class Qstat {
 		$jobs = [];
 		$xml = $this->execAndParse( self::CMD_QSTAT );
 		foreach ( $xml->djob_info->element as $xjob ) {
-			list( $_, $tool ) = explode( '.', (string) $xjob->JB_owner, 2 );
+			$tool = (string) $xjob->JB_owner;
+			if ( substr( $tool, 0, 6 ) === 'tools.' ) {
+				$tool = substr( $tool, 6 );
+			}
 			$job = [
 				'num' => (string) $xjob->JB_job_number,
 				'name' => (string) $xjob->JB_job_name,
