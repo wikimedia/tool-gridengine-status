@@ -4,6 +4,9 @@
 			"Bryan Davis"
 		]
 	},
+	"error-header": "Fatal error page heading",
+	"error-id": "Fatal error identifier. Parameters:\n* $1 - short alpha numeric string unique to this error occurrence",
+	"error-message": "Fatal error page content",
 	"header-title": "Used as the page title",
 	"zzzzz": "unused message stuck at the bottom of the file.\n{{Identical|zzzzz}}"
 }
