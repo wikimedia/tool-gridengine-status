@@ -115,7 +115,7 @@ class Qstat {
 					$host[(string) $hv->attributes()->name] = (string) $hv;
 				}
 				$used = static::mmem( static::safeGet( $host, 'mem_used', '0M' ) );
-				$totle = static::mmem( static::safeGet( $host, 'mem_total', '1M' ) );
+				$total = static::mmem( static::safeGet( $host, 'mem_total', '1M' ) );
 				$host['mem'] = $used / $total;
 				$hosts[$hname] = $host;
 			}
