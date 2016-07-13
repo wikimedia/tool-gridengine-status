@@ -113,6 +113,17 @@ class App extends AbstractApp {
 	}
 
 	/**
+	 * @inherit
+	 */
+	protected function configureHeaderMiddleware() {
+		$headers = parent::configureHeaderMiddleware();
+		// The tablesort plugin needs eval (gross!)
+		$headers['Content-Security-Policy'] .=
+			"; script-src 'self' 'unsafe-eval'";
+		return $headers;
+	}
+
+	/**
 	 * Configure routes to be handled by application.
 	 *
 	 * @param \Slim\Slim $slim Application
