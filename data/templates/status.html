@@ -1,40 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Wikimedia Tool Labs</h1>
-<p>This is the web server for the Tool Labs project, the home of community-maintained external tools supporting Wikimedia projects and their users.</p>
-<h2>Grid Status</h2>
+<h1>{{ 'tool-labs'|message }}</h1>
+<p>{{ 'tool-labs-desc'|message }}</p>
+<h2>{{ 'status-header'|message }}</h2>
 
 {% for hostname, host in hosts %}
-<div class="hostline">
+<div class="hostline" id="{{ hostname }}">
   <span class="hostname">{{ hostname }}</span>
-  <b>Load:</b> {{ host.load }}%
-  <b>Memory:</b> {{ host.mem }}%
-  {% if host.vmem > 0 %}<b>Free vmem:</b> {{ host.vmem|humanmem }}{% endif %}
+  <b>{{ 'status-load'|message }}</b> {{ host.load }}%
+  <b>{{ 'status-memory'|message }}</b> {{ host.mem }}%
+  {% if host.vmem > 0 %}<b>{{ 'status-free-vmem'|message }}</b> {{ host.vmem|humanmem }}{% endif %}
 </div>
 <table class="hostjobs tablesorter">
   <thead>
     <tr>
-      <th>No.</th>
-      <th>Name</th>
-      <th>Tool</th>
-      <th>State</th>
-      <th>Time</th>
-      <th>CPU</th>
-      <th>VMEM</th>
+      <th>{{ 'status-number'|message }}</th>
+      <th>{{ 'status-name'|message }}</th>
+      <th>{{ 'status-tool'|message }}</th>
+      <th>{{ 'status-state'|message }}</th>
+      <th>{{ 'status-time'|message }}</th>
+      <th>{{ 'status-cpu'|message }}</th>
+      <th>{{ 'status-vmem'|message }}</th>
     </tr>
   </thead>
   <tbody>
     {% for jobid, job in host.jobs %}
-    <tr class="jobline-{{ job.state }}">
+    <tr class="jobline-{{ job.state }}" id="job-{{ jobid }}">
       <td class="jobno">{{ jobid }}</td>
       <td class="jobname">{{ job.name }}</td>
       <td class="jobtool"><a href="/?tool={{ job.tool }}">{{ job.tool }}</a></td>
       <td class="jobstate">{{ job.queue|capitalize }} / {{ job.state|capitalize }}</td>
       <td class="jobtime">{{ job.submit|date("Y-m-d H:i:s") }}</td>
-      <td class="jobcpu">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}n/a{% endif %}</td>
+      <td class="jobcpu">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}{{ 'status-na'|message }}{% endif %}</td>
       <td class="jobvmem">{% if job.vmem is not empty %}{{ (job.vmem / 1024 / 1024)|humanmem }}/{{ (job.h_vmem / 1024 / 1024)|humanmem }}
-        {% if job.maxvmem > job.vmem %}(peak {{ (job.maxvmem / 1024 / 1024)|humanmem }}){% endif %}
+        {% if job.maxvmem > job.vmem %}({{ 'status-peak'|message }} {{ (job.maxvmem / 1024 / 1024)|humanmem }}){% endif %}
         {% endif %}</td>
     </tr>
     {% endfor %}

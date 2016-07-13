@@ -15,20 +15,20 @@
     <div class="colmask leftmenu"><div class="colright">
         <div class="col1wrap"><div class="col1">
             {% block pre_content %}{% endblock pre_content %}
-            {% block content %}<p>{{ app.request.getPath }}: Your message here.</p>{% endblock content %}
+            {% block content %}{% endblock content %}
             {% block post_content %}{% endblock post_content %}
         </div></div>
         <div class="col2">
-          <div id="logo"><a href="/"><img src="/Tool_Labs_logo_thumb.png" width="122" height="138" alt="Wikitech and Wikimedia Labs"></a></div>
+          <div id="logo"><a href="/"><img src="/Tool_Labs_logo_thumb.png" width="122" height="138" alt="{{ 'nav-logo-alt'|message }}"></a></div>
           <ul>
-            <li><a href="/?list">Tools</a></li>
-            <li><a href="/?status">Status</a></li>
-            <li><a href="/?Privacy">Privacy policy</a></li>
+            <li><a href="/?list">{{ 'nav-tools'|message }}</a></li>
+            <li><a href="/?status">{{ 'nav-status'|message }}</a></li>
+            <li><a href="/?Privacy">{{ 'nav-privacy-policy'|message }}</a></li>
           </ul>
-          <em>Maintainers:</em>
+          <em>{{ 'nav-maintainers'|message }}</em>
           <ul>
-            <li><a href="/?Help">Help</a></li>
-            <li><a href="/?Rules">Rules</a></li>
+            <li><a href="/?Help">{{ 'nav-help'|message }}</a></li>
+            <li><a href="/?Rules">{{ 'nav-rules'|message }}</a></li>
           </ul>
         </div>
       </div>
