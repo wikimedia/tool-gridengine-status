@@ -19,6 +19,11 @@
 
 namespace Tools\GridEngineStatus;
 
+use Wikimedia\SimpleI18n\I18nContext;
+use Wikimedia\SimpleI18n\JsonCache;
+use Wikimedia\Slimapp\AbstractApp;
+use Wikimedia\Slimapp\Config;
+
 class App extends AbstractApp {
 	/**
 	 * Apply settings to the Slim application.
