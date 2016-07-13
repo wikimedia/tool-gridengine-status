@@ -39,7 +39,7 @@ class StatusPage extends Controller {
 		foreach ( $qhosts as $name => $host ) {
 			$freeVmem = self::safeGet( $host, 'h_vmem', 0 );
 			foreach ( $host['jobs'] as $job ) {
-				$freeVmem -= self::safeGet( $jobs[$job], 'h_vmem', 0 );
+				$freeVmem -= self::safeGet( $qjobs[$job], 'h_vmem', 0 );
 			}
 			if ( $freeVmem < 0 ) {
 				$freeVmem = 0;
