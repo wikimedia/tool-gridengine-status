@@ -54,17 +54,27 @@ class HumanFilters extends Twig_Extension {
 	}
 
 	public function humantimeFilterCallback( $secs ) {
-		if ( $secs < 120 ) {
-			return "{$secs}s";
+		$parts = [];
+		if ( $secs > 86400 ) {
+			$days = (int) ( $secs / 86400 );
+			$secs = $secs % 86400;
+			$parts[] = "{$days}d";
 		}
-		$secs = (int) $secs;
-		$mins = (int) ( $secs / 60 );
-		$secs = $secs % 60;
-		if ( $mins < 60 ) {
-			return "{$mins}m{$secs}s";
+		if ( $secs > 3600 ) {
+			$hours = (int) ( $secs / 3600 );
+			$secs = $secs % 3600;
+			$parts[] = "{$hours}h";
+		} elseif ( $parts ) {
+			$parts[] = '0h';
 		}
-		$hours = (int) ( $mins / 60 );
-		$mins = $mins % 60;
-		return "{$hours}h{$mins}m";
+		if ( $secs > 60 ) {
+			$mins = (int) ( $secs / 60 );
+			$secs = $secs % 60;
+			$parts[] = "{$mins}m";
+		} elseif ( $parts ) {
+			$parts[] = '0m';
+		}
+		$parts[] = "{$secs}s";
+		return implode( '', $parts );
 	}
 }
