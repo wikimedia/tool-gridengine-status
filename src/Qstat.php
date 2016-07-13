@@ -72,7 +72,6 @@ class Qstat {
 			}
 			$jobs[$job['num']] = $job;
 		}
-		ksort( $jobs );
 		return $jobs;
 	}
 
@@ -92,6 +91,9 @@ class Qstat {
 					'h_vmem' => static::mmem( (string) $xhost->resourcevalue ) * 1024 * 1024,
 					'jobs'   => [],
 				];
+				foreach ( $xhost->hostvalue as $hv ) {
+					$host[(string) $hv->attributes()->name] = (string) $hv;
+				}
 				foreach ( $xhost->job as $xjob ) {
 					$jid = (int) $xjob->attributes()->name;
 					$job = [];
@@ -99,24 +101,20 @@ class Qstat {
 						$job[(string) $jv->attributes()->name] = (string) $jv;
 					}
 					$rawState = static::safeGet( $job, 'job_state' );
-					$jobs[$jid]['state'] = $rawState;
+					$job['state'] = $rawState;
 					if ( stristr( $rawState, 'R' ) !== false ) {
-						$jobs[$jid]['state'] = 'Running';
+						$job['state'] = 'Running';
 					}
 					if ( stristr( $rawState, 's' ) !== false ) {
-						$jobs[$jid]['state'] = 'Suspended';
+						$job['state'] = 'Suspended';
 					}
 					if ( stristr( $rawState, 'd' ) !== false ) {
-						$jobs[$jid]['state'] = 'Deleting';
+						$job['state'] = 'Deleting';
 					}
-					$jobs[$jid]['host'] = $hname;
-					$jobs[$jid]['priority'] = static::safeGet(
-						$job, 'priority' );
-					$host['jobs'][] = $jid;
+					$job['host'] = $hname;
+					$host['jobs'][$jid] = $job;
 				}
-				foreach ( $xhost->hostvalue as $hv ) {
-					$host[(string) $hv->attributes()->name] = (string) $hv;
-				}
+				ksort( $host['jobs'] );
 				$used = static::mmem( static::safeGet( $host, 'mem_used', '0M' ) );
 				$total = static::mmem( static::safeGet( $host, 'mem_total', '1M' ) );
 				$host['mem'] = $used / $total;

@@ -36,6 +36,7 @@ class StatusPage extends Controller {
 		$qjobs = $this->qstat->getJobs();
 
 		$hosts = [];
+		$jobHosts = [];
 		foreach ( $qhosts as $name => $host ) {
 			$freeVmem = self::safeGet( $host, 'h_vmem', 0 );
 			foreach ( $host['jobs'] as $job ) {
@@ -53,11 +54,12 @@ class StatusPage extends Controller {
 				'vmem' => (int) ( $freeVmem / 1024 / 1024 ),
 				'jobs' => [],
 			];
-		}
 
-		foreach ( $qjobs as $jobid => $job ) {
-			if ( array_key_exists( 'host', $job ) ) {
-				$hosts[$job['host']]['jobs'][$jobid] = $job;
+			foreach ( $host['jobs'] as $jobid => $job ) {
+				if ( array_key_exists( $jobid, $qjobs ) ) {
+					$hosts[$name]['jobs'][$jobid] = array_merge(
+						$job, $qjobs[$jobid] );
+				}
 			}
 		}
 
