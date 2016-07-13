@@ -26,6 +26,11 @@ use Twig_SimpleFilter;
  * Twig filters to format numbers for humans.
  */
 class HumanFilters extends Twig_Extension {
+
+	public function getName() {
+		return 'humanfilters';
+	}
+
 	public function getFilters() {
 		return [
 			new Twig_SimpleFilter(
