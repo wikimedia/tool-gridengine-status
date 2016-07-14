@@ -98,9 +98,7 @@ class Qstat {
 				foreach ( $xhost->hostvalue as $hv ) {
 					$name = (string) $hv->attributes()->name;
 					$val = (string) $hv;
-					if ( $name === 'priority' ) {
-						$val = (float) trim( $val, " \t\n\r\0\x0B'" );
-					} elseif ( is_numeric( $val ) ) {
+					if ( is_numeric( $val ) ) {
 						$val = $val + 0;
 					}
 					$host[$name] = $val;
@@ -109,7 +107,14 @@ class Qstat {
 					$jid = (int) $xjob->attributes()->name;
 					$job = [];
 					foreach ( $xjob->jobvalue as $jv ) {
-						$job[(string) $jv->attributes()->name] = (string) $jv;
+						$name = (string) $jv->attributes()->name;
+						$val = (string) $jv;
+						if ( $name === 'priority' ) {
+							$val = (float) trim( $val, "'" );
+						} elseif ( is_numeric( $val ) ) {
+							$val = $val + 0;
+						}
+						$job[$name] = $val;
 					}
 					$rawState = static::safeGet( $job, 'job_state' );
 					$job['state'] = $rawState;
