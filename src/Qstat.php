@@ -99,7 +99,7 @@ class Qstat {
 					$name = (string) $hv->attributes()->name;
 					$val = (string) $hv;
 					if ( $name === 'priority' ) {
-						$val = (float) trim( $val, "'" );
+						$val = (float) trim( $val, " \t\n\r\0\x0B'" );
 					} elseif ( is_numeric( $val ) ) {
 						$val = $val + 0;
 					}
