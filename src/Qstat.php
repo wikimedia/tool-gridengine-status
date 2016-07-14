@@ -22,6 +22,9 @@ namespace Tools\GridEngineStatus;
 use Exception;
 use SimpleXMLElement;
 
+/**
+ * Get (Oracle|Open)GridEngine job and host status.
+ */
 class Qstat {
 
 	const CMD_QSTAT = "/usr/bin/qstat -xml -j '*' | /bin/sed -e 's/JATASK:[^>]*/jatask/g'";
@@ -40,9 +43,9 @@ class Qstat {
 				$tool = substr( $tool, 6 );
 			}
 			$job = [
-				'num' => (string) $xjob->JB_job_number,
+				'num' => (int) $xjob->JB_job_number,
 				'name' => (string) $xjob->JB_job_name,
-				'submit' => (string) $xjob->JB_submission_time,
+				'submit' => (int) $xjob->JB_submission_time,
 				'owner' => (string) $xjob->JB_owner,
 				'tool' => $tool,
 			];
@@ -52,7 +55,8 @@ class Qstat {
 				$job['queue'] = '(manual)';
 			}
 			foreach ( $xjob->JB_hard_resource_list->qstat_l_requests as $lreq ) {
-				if ( $lreq->CE_name === 'h_vmem' ) {
+				$name = (string) $lreq->CE_name;
+				if ( $name === 'h_vmem' ) {
 					$job['h_vmem'] = (int) $lreq->CE_doubleval;
 				}
 			}
@@ -86,13 +90,20 @@ class Qstat {
 			$parts = explode( '.', (string) $xhost->attributes()->name, 2 );
 			$hname = $parts[0];
 			if ( $hname !== 'global' ) {
+				$jobs = [];
 				$host = [
-					'name'   => $hname,
+					'name' => $hname,
 					'h_vmem' => static::mmem( (string) $xhost->resourcevalue ) * 1024 * 1024,
-					'jobs'   => [],
 				];
 				foreach ( $xhost->hostvalue as $hv ) {
-					$host[(string) $hv->attributes()->name] = (string) $hv;
+					$name = (string) $hv->attributes()->name;
+					$val = (string) $hv;
+					if ( $name === 'priority' ) {
+						$val = (float) trim( $val, "'" );
+					} elseif ( is_numeric( $val ) ) {
+						$val = $val + 0;
+					}
+					$host[$name] = $val;
 				}
 				foreach ( $xhost->job as $xjob ) {
 					$jid = (int) $xjob->attributes()->name;
@@ -112,12 +123,13 @@ class Qstat {
 						$job['state'] = 'Deleting';
 					}
 					$job['host'] = $hname;
-					$host['jobs'][$jid] = $job;
+					$jobs[$jid] = $job;
 				}
-				ksort( $host['jobs'] );
+				ksort( $jobs );
 				$used = static::mmem( static::safeGet( $host, 'mem_used', '0M' ) );
 				$total = static::mmem( static::safeGet( $host, 'mem_total', '1M' ) );
 				$host['mem'] = $used / $total;
+				$host['jobs']  = $jobs;
 				$hosts[$hname] = $host;
 			}
 		}
