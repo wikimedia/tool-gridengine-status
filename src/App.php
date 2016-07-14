@@ -99,7 +99,7 @@ class App extends AbstractApp {
 	 */
 	protected function configureHeaderMiddleware() {
 		return [
-			'Content-Type' => 'application/vnd.api+json',
+			'Content-Type' => 'application/json',
 		];
 	}
 
