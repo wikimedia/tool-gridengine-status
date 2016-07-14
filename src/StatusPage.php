@@ -62,7 +62,7 @@ class StatusPage extends Controller {
 		}
 
 		$this->view->set( 'hosts', $hosts );
-		$this->render( 'status.html' );
+		$this->render( 'status.json' );
 	}
 
 	protected static function safeGet( array $arr, $key, $default = '' ) {

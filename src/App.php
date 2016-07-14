@@ -19,8 +19,6 @@
 
 namespace Tools\GridEngineStatus;
 
-use Wikimedia\SimpleI18n\I18nContext;
-use Wikimedia\SimpleI18n\JsonCache;
 use Wikimedia\Slimapp\AbstractApp;
 use Wikimedia\Slimapp\Config;
 
@@ -46,7 +44,7 @@ class App extends AbstractApp {
 					'errorId' => $errorId,
 				] );
 				$slim->view->set( 'errorId', $errorId );
-				$slim->render( 'error.html' );
+				$slim->render( 'error.json' );
 			} );
 		} );
 
@@ -65,18 +63,6 @@ class App extends AbstractApp {
 	 * @param \Slim\Helper\Set $container IOC container
 	 */
 	protected function configureIoc( \Slim\Helper\Set $container ) {
-		$container->singleton( 'i18nCache', function ( $c ) {
-			return new JsonCache(
-				$c->settings['i18n.path'], $c->log
-			);
-		} );
-
-		$container->singleton( 'i18nContext', function ( $c ) {
-			return new I18nContext(
-				$c->i18nCache, $c->settings['i18n.default'], $c->log
-			);
-		} );
-
 		$container->singleton( 'qstat', function ( $c ) {
 			return new Qstat();
 		} );
@@ -100,15 +86,11 @@ class App extends AbstractApp {
 		// Install twig parser extensions
 		$view->parserExtensions = [
 			new \Slim\Views\TwigExtension(),
-			new \Wikimedia\SimpleI18n\TwigExtension( $this->slim->i18nContext ),
-			new HumanFilters(),
-			new \Twig_Extension_Debug(),
 		];
 
 		// Set default view data
 		$view->replace( [
 			'app' => $this->slim,
-			'i18nCtx' => $this->slim->i18nContext,
 		] );
 	}
 
@@ -116,11 +98,9 @@ class App extends AbstractApp {
 	 * @inherit
 	 */
 	protected function configureHeaderMiddleware() {
-		$headers = parent::configureHeaderMiddleware();
-		// The tablesort plugin needs eval (gross!)
-		$headers['Content-Security-Policy'] .=
-			"; script-src 'self' 'unsafe-eval'";
-		return $headers;
+		return [
+			'Content-Type' => 'application/json; charset=UTF-8',
+		];
 	}
 
 	/**
@@ -133,7 +113,6 @@ class App extends AbstractApp {
 			function () use ( $slim ) {
 				$slim->get( '', function () use ( $slim ) {
 					$page = new StatusPage( $slim );
-					$page->setI18nContext( $slim->i18nContext );
 					$page->setQstat( $slim->qstat );
 					$page();
 				} )->name( 'status' );
@@ -141,7 +120,7 @@ class App extends AbstractApp {
 		); // end group '/'
 
 		$slim->notFound( function () use ( $slim ) {
-			$slim->render( '404.html' );
+			$slim->render( '404.json' );
 		} );
 	}
 }

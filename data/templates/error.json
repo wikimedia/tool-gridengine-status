@@ -1,0 +1,9 @@
+{% spaceless %}
+{{ {
+      'status': 'error',
+      'payload': {
+        'error-id': errorId,
+      },
+   } | json_encode | raw
+}}
+{% endspaceless %}

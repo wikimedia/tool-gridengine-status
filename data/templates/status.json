@@ -1,0 +1,9 @@
+{% spaceless %}
+{{ {
+      'status': 'ok',
+      'payload': {
+        'hosts': hosts,
+      },
+   } | json_encode | raw
+}}
+{% endspaceless %}

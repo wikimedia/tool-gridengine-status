@@ -1,0 +1,7 @@
+{% spaceless %}
+{{ {
+      'status': 'not-found',
+      'payload': {},
+   } | json_encode | raw
+}}
+{% endspaceless %}
