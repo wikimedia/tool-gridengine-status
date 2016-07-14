@@ -1,8 +1,9 @@
 {% spaceless %}
+{% set now = 'now'|date('c') %}
 {{ {
       'data': {
           'type': 'oge-status',
-          'id': '{{ "now"|date("c") }}',
+          'id': now,
           'attributes': hosts,
       },
    } | json_encode | raw
