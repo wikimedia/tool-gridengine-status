@@ -1,8 +1,9 @@
 {% spaceless %}
 {{ {
-      'status': 'ok',
-      'payload': {
-        'hosts': hosts,
+      'data': {
+          'type': 'oge-status',
+          'id': '{{ "now"|date("c") }}',
+          'attributes': hosts,
       },
    } | json_encode | raw
 }}

@@ -1,9 +1,12 @@
 {% spaceless %}
 {{ {
-      'status': 'error',
-      'payload': {
-        'error-id': errorId,
-      },
+      'errors': [
+        {
+          'id': errorId,
+          'status': 500,
+          'title': 'Internal Server Error',
+        },
+      ],
    } | json_encode | raw
 }}
 {% endspaceless %}

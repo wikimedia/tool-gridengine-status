@@ -1,7 +1,11 @@
 {% spaceless %}
 {{ {
-      'status': 'not-found',
-      'payload': {},
+      'errors': [
+        {
+          'status': 404,
+          'title': 'Not Found',
+        },
+      ],
    } | json_encode | raw
 }}
 {% endspaceless %}
