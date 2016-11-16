@@ -3,6 +3,7 @@
 	"license": "GPL-3.0+",
 	"homepage": "https://tools.wmflabs.org/gridengine-status/",
 	"require": {
+		"neitanod/forceutf8": "~2.0.0",
 		"wikimedia/slimapp": "dev-master",
 		"php": ">=5.5.9"
 	},

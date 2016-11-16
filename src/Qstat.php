@@ -20,6 +20,7 @@
 namespace Tools\GridEngineStatus;
 
 use Exception;
+use ForceUTF8\Encoding;
 use SimpleXMLElement;
 
 /**
@@ -151,6 +152,7 @@ class Qstat {
 	 */
 	protected function execAndParse( $cmd ) {
 		$out = shell_exec( $cmd );
+		$out = Encoding::toUTF8( $out );
 		libxml_use_internal_errors();
 		libxml_clear_errors();
 		return new SimpleXMLElement( $out );
