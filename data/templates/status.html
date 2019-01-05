@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Grid Status</h1>
+
+<table class="table table-striped table-sm table-responsive tablesort">
+  <thead>
+    <tr>
+      <th data-sort-default>Host</th>
+      <th class="text-right" data-sort-method="number">Jobs</th>
+      <th class="text-right" data-sort-method="number">Load</th>
+      <th class="text-right" data-sort-method="number">Memory</th>
+      <th class="text-right" data-sort-method="number">Free vmem</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hostname, host in hosts %}
+    <tr>
+      <th scope="row"><a href="#host-{{ hostname }}">{{ hostname }}</a></th>
+      <td class="text-right">{{ host.jobs|length }}</td>
+      <td class="text-right">{{ host.load }}%</td>
+      <td class="text-right">{{ host.mem }}%</td>
+      <td class="text-right" data-sort="{{ host.vmem|default(0) }}">{% if host.vmem > 0 %}{{ host.vmem|humanmem }}{% else %}-{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% for hostname, host in hosts %}
+<h2><a name="host-{{ hostname }}">{{ hostname }}</a></h2>
+<table class="table table-sm table-responsive">
+  <thead>
+    <tr>
+      <th class="text-right" data-sort-method="number">Jobs</th>
+      <th class="text-right" data-sort-method="number">Load</th>
+      <th class="text-right" data-sort-method="number">Memory</th>
+      <th class="text-right" data-sort-method="number">Free vmem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-right">{{ host.jobs|length }}</td>
+      <td class="text-right">{{ host.load }}%</td>
+      <td class="text-right">{{ host.mem }}%</td>
+      <td class="text-right" data-sort="{{ host.vmem|default(0) }}">{% if host.vmem > 0 %}{{ host.vmem|humanmem }}{% else %}-{% endif %}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-striped table-sm table-responsive tablesort">
+  <thead>
+    <tr>
+      <th data-sort-default>No.</th>
+      <th>Name</th>
+      <th>Tool</th>
+      <th>State</th>
+      <th data-sort-method="number">Time</th>
+      <th data-sort-methos="number">CPU</th>
+      <th data-sort-methos="number">VMEM</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for jobid, job in host.jobs %}
+    <tr class="jobline-{{ job.state }}" id="job-{{ jobid }}">
+      <td class="jobno">{{ jobid }}</td>
+      <td class="jobname">{{ job.name }}</td>
+      <td class="jobtool"><a href="{{ urlFor('tool', {'name': job.tool}) }}">{{ job.tool }}</a></td>
+      <td class="jobstate">{{ job.queue|capitalize }} / {{ job.state|capitalize }}</td>
+      <td class="jobtime" data-sort="{{ job.submit }}">{{ job.submit|date("Y-m-d H:i:s") }}</td>
+      <td class="jobcpu" data-sort="{{ job.cpu|default(0) }}">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}n/a{% endif %}</td>
+      <td class="jobvmem" data-sort="{{ job.vmem|default(0) }}">{% if job.vmem is not empty %}{{ (job.vmem / 1024 / 1024)|humanmem }}/{{ (job.h_vmem / 1024 / 1024)|humanmem }}
+        {% if job.maxvmem > job.vmem %}(peak {{ (job.maxvmem / 1024 / 1024)|humanmem }}){% endif %}
+        {% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+{% endblock content %}
+
+{% block javascript %}
+{{ parent() }}
+{% include '_tablesort-js.html' %}
+{% endblock javascript %}

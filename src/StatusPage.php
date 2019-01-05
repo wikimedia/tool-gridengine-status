@@ -28,10 +28,22 @@ class StatusPage extends Controller {
 	protected $qstat;
 
 	/**
+	 * @var string
+	 */
+	protected $template;
+
+	/**
 	 * @param Qstat $qstat
 	 */
 	public function setQstat( $qstat ) {
 		$this->qstat = $qstat;
+	}
+
+	/**
+	 * @param string $template
+	 */
+	public function setTemplate( $template ) {
+		$this->template = $template;
 	}
 
 	protected function handleGet() {
@@ -66,7 +78,7 @@ class StatusPage extends Controller {
 		}
 
 		$this->view->set( 'hosts', $hosts );
-		$this->render( 'status.json' );
+		$this->render( $this->template );
 	}
 
 	/**

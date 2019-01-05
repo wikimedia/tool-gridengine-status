@@ -114,6 +114,13 @@ class App extends AbstractApp {
 				$slim->get( '', function () use ( $slim ) {
 					$page = new StatusPage( $slim );
 					$page->setQstat( $slim->qstat );
+					$page->setTemplate( 'status.html' );
+					$page();
+				} )->name( 'status' );
+				$slim->get( 'api/v1/', function () use ( $slim ) {
+					$page = new StatusPage( $slim );
+					$page->setQstat( $slim->qstat );
+					$page->setTemplate( 'status.json' );
 					$page();
 				} )->name( 'status' );
 			}
