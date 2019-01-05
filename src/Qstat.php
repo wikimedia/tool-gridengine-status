@@ -39,19 +39,19 @@ class Qstat {
 		$jobs = [];
 		$xml = $this->execAndParse( self::CMD_QSTAT );
 		foreach ( $xml->djob_info->element as $xjob ) {
-			$tool = (string) $xjob->JB_owner;
+			$tool = (string)$xjob->JB_owner;
 			if ( substr( $tool, 0, 6 ) === 'tools.' ) {
 				$tool = substr( $tool, 6 );
 			}
 			$job = [
-				'num' => (int) $xjob->JB_job_number,
-				'name' => (string) $xjob->JB_job_name,
-				'submit' => (int) $xjob->JB_submission_time,
-				'owner' => (string) $xjob->JB_owner,
+				'num' => (int)$xjob->JB_job_number,
+				'name' => (string)$xjob->JB_job_name,
+				'submit' => (int)$xjob->JB_submission_time,
+				'owner' => (string)$xjob->JB_owner,
 				'tool' => $tool,
 			];
 			if ( $xjob->JB_hard_queue_list ) {
-				$job['queue'] = (string) $xjob->JB_hard_queue_list->destin_ident_list->QR_name;
+				$job['queue'] = (string)$xjob->JB_hard_queue_list->destin_ident_list->QR_name;
 			} else {
 				$job['queue'] = '(manual)';
 			}
@@ -59,9 +59,9 @@ class Qstat {
 				$xjob->JB_hard_resource_list->qstat_l_requests
 			) {
 				foreach ( $xjob->JB_hard_resource_list->qstat_l_requests as $lreq ) {
-					$name = (string) $lreq->CE_name;
+					$name = (string)$lreq->CE_name;
 					if ( $name === 'h_vmem' ) {
-						$job['h_vmem'] = (int) $lreq->CE_doubleval;
+						$job['h_vmem'] = (int)$lreq->CE_doubleval;
 					}
 				}
 			}
@@ -69,14 +69,14 @@ class Qstat {
 				$xjob->JB_ja_tasks->jatask->JAT_scaled_usage_list
 			) {
 				foreach ( $xjob->JB_ja_tasks->jatask->JAT_scaled_usage_list->scaled as $usage ) {
-					$job[(string) $usage->UA_name] = (int) $usage->UA_value;
+					$job[(string)$usage->UA_name] = (int)$usage->UA_value;
 				}
 			}
 			if ( $xjob->JB_ja_tasks->ulong_sublist &&
 				$xjob->JB_ja_tasks->ulong_sublist->JAT_scaled_usage_list
 			) {
 				foreach ( $xjob->JB_ja_tasks->ulong_sublist->JAT_scaled_usage_list->scaled as $usage ) {
-					$job[(string) $usage->UA_name] = (int) $usage->UA_value;
+					$job[(string)$usage->UA_name] = (int)$usage->UA_value;
 				}
 			}
 			$jobs[$job['num']] = $job;
@@ -92,30 +92,30 @@ class Qstat {
 		$hosts = [];
 		$xml = $this->execAndParse( self::CMD_QHOST );
 		foreach ( $xml->host as $xhost ) {
-			$parts = explode( '.', (string) $xhost->attributes()->name, 2 );
+			$parts = explode( '.', (string)$xhost->attributes()->name, 2 );
 			$hname = $parts[0];
 			if ( $hname !== 'global' ) {
 				$jobs = [];
 				$host = [
 					'name' => $hname,
-					'h_vmem' => static::mmem( (string) $xhost->resourcevalue ) * 1024 * 1024,
+					'h_vmem' => static::mmem( (string)$xhost->resourcevalue ) * 1024 * 1024,
 				];
 				foreach ( $xhost->hostvalue as $hv ) {
-					$name = (string) $hv->attributes()->name;
-					$val = (string) $hv;
+					$name = (string)$hv->attributes()->name;
+					$val = (string)$hv;
 					if ( is_numeric( $val ) ) {
 						$val = $val + 0;
 					}
 					$host[$name] = $val;
 				}
 				foreach ( $xhost->job as $xjob ) {
-					$jid = (int) $xjob->attributes()->name;
+					$jid = (int)$xjob->attributes()->name;
 					$job = [];
 					foreach ( $xjob->jobvalue as $jv ) {
-						$name = (string) $jv->attributes()->name;
-						$val = (string) $jv;
+						$name = (string)$jv->attributes()->name;
+						$val = (string)$jv;
 						if ( $name === 'priority' ) {
-							$val = (float) trim( $val, "'" );
+							$val = (float)trim( $val, "'" );
 						} elseif ( is_numeric( $val ) ) {
 							$val = $val + 0;
 						}
@@ -155,7 +155,9 @@ class Qstat {
 	 * @throws Exception
 	 */
 	protected function execAndParse( $cmd ) {
+		// phpcs:disable MediaWiki.Usage.ForbiddenFunctions.shell_exec
 		$out = shell_exec( $cmd );
+		// phpcs:enable
 		$out = Encoding::toUTF8( $out );
 		libxml_use_internal_errors();
 		libxml_clear_errors();

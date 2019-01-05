@@ -27,6 +27,9 @@ class StatusPage extends Controller {
 	 */
 	protected $qstat;
 
+	/**
+	 * @param Qstat $qstat
+	 */
 	public function setQstat( $qstat ) {
 		$this->qstat = $qstat;
 	}
@@ -43,8 +46,8 @@ class StatusPage extends Controller {
 			$procs = self::safeGet( $host, 'num_proc', 1 );
 
 			$hosts[$name] = [
-				'load' => (int) ( ( $loadAvg * 100 ) / $procs ),
-				'mem' => (int) ( self::safeGet( $host, 'mem', 0 ) * 100 ),
+				'load' => (int)( ( $loadAvg * 100 ) / $procs ),
+				'mem' => (int)( self::safeGet( $host, 'mem', 0 ) * 100 ),
 				'vmem' => 0,
 				'jobs' => [],
 			];
@@ -59,13 +62,22 @@ class StatusPage extends Controller {
 			if ( $freeVmem < 0 ) {
 				$freeVmem = 0;
 			}
-			$hosts[$name]['vmem'] = (int) ( $freeVmem / 1024 / 1024 );
+			$hosts[$name]['vmem'] = (int)( $freeVmem / 1024 / 1024 );
 		}
 
 		$this->view->set( 'hosts', $hosts );
 		$this->render( 'status.json' );
 	}
 
+	/**
+	 * Get a value from an array or return a default value if key is not
+	 * present in the given array.
+	 *
+	 * @param array $arr Array to get from
+	 * @param string|int $key Key to get
+	 * @param mixed $default Default value to return if key is not present
+	 * @return mixed
+	 */
 	protected static function safeGet( array $arr, $key, $default = '' ) {
 		return array_key_exists( $key, $arr ) ? $arr[$key] : $default;
 	}

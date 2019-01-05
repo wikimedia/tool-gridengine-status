@@ -95,7 +95,7 @@ class App extends AbstractApp {
 	}
 
 	/**
-	 * @inherit
+	 * @inheritDoc
 	 */
 	protected function configureHeaderMiddleware() {
 		return [
@@ -117,7 +117,7 @@ class App extends AbstractApp {
 					$page();
 				} )->name( 'status' );
 			}
-		); // end group '/'
+		);
 
 		$slim->notFound( function () use ( $slim ) {
 			$slim->render( '404.json' );
