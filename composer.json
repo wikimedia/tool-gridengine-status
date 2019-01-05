@@ -5,7 +5,7 @@
 	"require": {
 		"neitanod/forceutf8": "~2.0.0",
 		"wikimedia/slimapp": "dev-master",
-		"php": ">=5.5.9"
+		"php": ">=7.0.33"
 	},
 	"autoload": {
 		"psr-4": {
@@ -13,9 +13,9 @@
 		}
 	},
 	"require-dev": {
-		"jakub-onderka/php-parallel-lint": "~0.9",
+		"jakub-onderka/php-parallel-lint": "~1.0",
 		"phpunit/phpunit": "~4.8|~5.0",
-		"mediawiki/mediawiki-codesniffer": "0.7.2"
+		"mediawiki/mediawiki-codesniffer": "23.0.0"
 	},
 	"autoload-dev": {
 		"psr-4": {
