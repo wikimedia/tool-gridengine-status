@@ -120,7 +120,7 @@ class App extends AbstractApp {
 		);
 
 		$slim->notFound( function () use ( $slim ) {
-			$slim->render( '404.json' );
+			$slim->render( '404.html' );
 		} );
 	}
 }
