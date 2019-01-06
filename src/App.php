@@ -69,6 +69,20 @@ class App extends AbstractApp {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	protected function configureHeaderMiddleware() {
+		$headers = parent::configureHeaderMiddleware();
+		$headers['Content-Security-Policy'] =
+			"default-src 'self' https://tools-static.wmflabs.org; " .
+			"frame-src 'none'; " .
+			"img-src 'self' data: https://tools-static.wmflabs.org" .
+			"object-src 'none'; " .
+			"worker-src 'none'; ";
+		return $headers;
+	}
+
+	/**
 	 * Configure view behavior.
 	 *
 	 * @param \Slim\View $view Default view
