@@ -44,7 +44,7 @@ class App extends AbstractApp {
 					'errorId' => $errorId,
 				] );
 				$slim->view->set( 'errorId', $errorId );
-				$slim->render( 'error.json' );
+				$slim->render( 'error.html' );
 			} );
 		} );
 
