@@ -123,7 +123,7 @@ class App extends AbstractApp {
 					$page->setQstat( $slim->qstat );
 					$page->setTemplate( 'status.json' );
 					$page();
-				} )->name( 'status' );
+				} )->name( 'json' );
 			}
 		);
 
