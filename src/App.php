@@ -86,6 +86,7 @@ class App extends AbstractApp {
 		// Install twig parser extensions
 		$view->parserExtensions = [
 			new \Slim\Views\TwigExtension(),
+			new HumanFilters(),
 		];
 
 		// Set default view data
