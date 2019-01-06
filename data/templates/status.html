@@ -63,7 +63,7 @@
     <tr class="jobline-{{ job.state }}" id="job-{{ jobid }}">
       <td class="jobno">{{ jobid }}</td>
       <td class="jobname">{{ job.name }}</td>
-      <td class="jobtool"><a href="{{ urlFor('tool', {'name': job.tool}) }}">{{ job.tool }}</a></td>
+      <td class="jobtool"><a href="https://tools.wmflabs.org/admin/tool/{{ job.tool }}">{{ job.tool }}</a></td>
       <td class="jobstate">{{ job.queue|capitalize }} / {{ job.state|capitalize }}</td>
       <td class="jobtime" data-sort="{{ job.submit }}">{{ job.submit|date("Y-m-d H:i:s") }}</td>
       <td class="jobcpu" data-sort="{{ job.cpu|default(0) }}">{% if job.cpu is not empty %}{{ job.cpu|humantime }}{% else %}n/a{% endif %}</td>
