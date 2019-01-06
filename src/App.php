@@ -96,15 +96,6 @@ class App extends AbstractApp {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	protected function configureHeaderMiddleware() {
-		return [
-			'Content-Type' => 'application/json',
-		];
-	}
-
-	/**
 	 * Configure routes to be handled by application.
 	 *
 	 * @param \Slim\Slim $slim Application
@@ -122,6 +113,7 @@ class App extends AbstractApp {
 					$page = new StatusPage( $slim );
 					$page->setQstat( $slim->qstat );
 					$page->setTemplate( 'status.json' );
+					$page->setContentType( 'application/json' );
 					$page();
 				} )->name( 'json' );
 			}

@@ -33,6 +33,11 @@ class StatusPage extends Controller {
 	protected $template;
 
 	/**
+	 * @var string
+	 */
+	protected $contentType = 'text/html';
+
+	/**
 	 * @param Qstat $qstat
 	 */
 	public function setQstat( $qstat ) {
@@ -44,6 +49,13 @@ class StatusPage extends Controller {
 	 */
 	public function setTemplate( $template ) {
 		$this->template = $template;
+	}
+
+	/**
+	 * @param string $ct
+	 */
+	public function setContentType( $ct ) {
+		$this->contentType = $ct;
 	}
 
 	protected function handleGet() {
@@ -78,6 +90,7 @@ class StatusPage extends Controller {
 		}
 
 		$this->view->set( 'hosts', $hosts );
+		$this->response->headers->set( 'Content-Type', $this->contentType );
 		$this->render( $this->template );
 	}
 
