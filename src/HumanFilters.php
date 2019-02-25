@@ -27,10 +27,16 @@ use Twig_SimpleFilter;
  */
 class HumanFilters extends Twig_Extension {
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getName() {
 		return 'humanfilters';
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getFilters() {
 		return [
 			new Twig_SimpleFilter(
@@ -42,6 +48,11 @@ class HumanFilters extends Twig_Extension {
 		];
 	}
 
+	/**
+	 * Handle humanmem filter transformations
+	 * @param string $megs Number of megabytes
+	 * @return string
+	 */
 	public function humanmemFilterCallback( $megs ) {
 		if ( $megs > 1024 ) {
 			$megs = (int)( $megs / 102.4 );
@@ -53,6 +64,11 @@ class HumanFilters extends Twig_Extension {
 		return "{$megs}M";
 	}
 
+	/**
+	 * Handle humantime filter transformations
+	 * @param string $secs Number of seconds
+	 * @return string
+	 */
 	public function humantimeFilterCallback( $secs ) {
 		$parts = [];
 		if ( $secs > 86400 ) {

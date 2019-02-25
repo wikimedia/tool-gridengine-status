@@ -174,10 +174,10 @@ class Qstat {
 	protected static function mmem( $str ) {
 		$suffix = substr( $str, -1 );
 		if ( $suffix === 'M' ) {
-			return 0 + (int) $str;
+			return 0 + (int)$str;
 		}
 		if ( $suffix === 'G' ) {
-			return 1024 * (int) $str;
+			return 1024 * (int)$str;
 		}
 		return -1;
 	}
