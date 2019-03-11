@@ -65,9 +65,9 @@ class StatusPage extends Controller {
 		$hosts = [];
 		$jobHosts = [];
 		foreach ( $qhosts as $name => $host ) {
-			$freeVmem = self::safeGet( $host, 'h_vmem', 0 );
-			$loadAvg = self::safeGet( $host, 'load_avg', 0 );
-			$procs = self::safeGet( $host, 'num_proc', 1 );
+			$freeVmem = (int)self::safeGet( $host, 'h_vmem', 0 );
+			$loadAvg = (int)self::safeGet( $host, 'load_avg', 0 );
+			$procs = (int)self::safeGet( $host, 'num_proc', 1 );
 
 			$hosts[$name] = [
 				'load' => (int)( ( $loadAvg * 100 ) / $procs ),
@@ -80,7 +80,7 @@ class StatusPage extends Controller {
 				if ( array_key_exists( $jobid, $qjobs ) ) {
 					$hosts[$name]['jobs'][$jobid] = array_merge(
 						$job, $qjobs[$jobid] );
-					$freeVmem -= self::safeGet( $qjobs[$jobid], 'h_vmem', 0 );
+					$freeVmem -= (int)self::safeGet( $qjobs[$jobid], 'h_vmem', 0 );
 				}
 			}
 			if ( $freeVmem < 0 ) {
