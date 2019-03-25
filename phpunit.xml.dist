@@ -4,7 +4,6 @@
 		 convertErrorsToExceptions="true"
 		 convertNoticesToExceptions="true"
 		 convertWarningsToExceptions="true"
-		 mapTestClassNameToCoveredClassName="false"
 		 beStrictAboutTestsThatDoNotTestAnything="true"
 		 beStrictAboutOutputDuringTests="true"
 		 verbose="false">

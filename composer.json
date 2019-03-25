@@ -4,8 +4,8 @@
 	"homepage": "https://tools.wmflabs.org/gridengine-status/",
 	"require": {
 		"neitanod/forceutf8": "~2.0.0",
-		"wikimedia/slimapp": "dev-master",
-		"php": ">=7.0.33"
+		"wikimedia/slimapp": "~0.9",
+		"php": ">=7.2"
 	},
 	"autoload": {
 		"psr-4": {
@@ -14,8 +14,8 @@
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "~1.0",
-		"phpunit/phpunit": "~4.8|~5.0",
-		"mediawiki/mediawiki-codesniffer": "23.0.0"
+		"phpunit/phpunit": "~8.0",
+		"mediawiki/mediawiki-codesniffer": "24.0.0"
 	},
 	"autoload-dev": {
 		"psr-4": {
