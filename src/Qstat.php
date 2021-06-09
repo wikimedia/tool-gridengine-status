@@ -79,6 +79,15 @@ class Qstat {
 					$job[(string)$usage->UA_name] = (int)$usage->UA_value;
 				}
 			}
+			if ( $xjob->JB_hard_resource_list &&
+				$xjob->JB_hard_resource_list->qstat_l_requests
+			) {
+				foreach ( $xjob->JB_hard_resource_list->qstat_l_requests as $request ) {
+					if ( (string)$request->CE_name == 'release' ) {
+						$job[(string)$request->CE_name] = (string)$request->CE_stringval;
+					}
+				}
+			}
 			$jobs[$job['num']] = $job;
 		}
 		return $jobs;
