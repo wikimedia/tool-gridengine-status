@@ -64,7 +64,7 @@ class Qstat {
 						$job['h_vmem'] = (int)$lreq->CE_doubleval;
 					}
 					if ( $name == 'release' ) {
-						$job['release'] = (string)$request->CE_stringval;
+						$job['release'] = (string)$lreq->CE_stringval;
 					}
 				}
 			}
