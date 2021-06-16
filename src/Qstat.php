@@ -63,6 +63,9 @@ class Qstat {
 					if ( $name === 'h_vmem' ) {
 						$job['h_vmem'] = (int)$lreq->CE_doubleval;
 					}
+					if ( $name == 'release' ) {
+						$job['release'] = (string)$request->CE_stringval;
+					}
 				}
 			}
 			if ( $xjob->JB_ja_tasks->jatask &&
@@ -77,15 +80,6 @@ class Qstat {
 			) {
 				foreach ( $xjob->JB_ja_tasks->ulong_sublist->JAT_scaled_usage_list->scaled as $usage ) {
 					$job[(string)$usage->UA_name] = (int)$usage->UA_value;
-				}
-			}
-			if ( $xjob->JB_hard_resource_list &&
-				$xjob->JB_hard_resource_list->qstat_l_requests
-			) {
-				foreach ( $xjob->JB_hard_resource_list->qstat_l_requests as $request ) {
-					if ( (string)$request->CE_name == 'release' ) {
-						$job[(string)$request->CE_name] = (string)$request->CE_stringval;
-					}
 				}
 			}
 			$jobs[$job['num']] = $job;
