@@ -146,7 +146,11 @@ class Qstat {
 				$hosts[$hname] = $host;
 			}
 		}
-		ksort( $hosts );
+
+		uksort( $hosts, function ( string $first, string $second ): int {
+			return Utils::naturalSort( $first, $second );
+		} );
+
 		return $hosts;
 	}
 

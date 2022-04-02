@@ -63,7 +63,6 @@ class StatusPage extends Controller {
 		$qjobs = $this->qstat->getJobs();
 
 		$hosts = [];
-		$jobHosts = [];
 		foreach ( $qhosts as $name => $host ) {
 			$freeVmem = (int)self::safeGet( $host, 'h_vmem', 0 );
 			$loadAvg = (int)self::safeGet( $host, 'load_avg', 0 );
@@ -88,6 +87,10 @@ class StatusPage extends Controller {
 			}
 			$hosts[$name]['vmem'] = (int)( $freeVmem / 1024 / 1024 );
 		}
+
+		uksort( $hosts, function ( string $first, string $second ): int {
+			return Utils::naturalSort( $first, $second );
+		} );
 
 		$this->view->set( 'hosts', $hosts );
 		$this->response->headers->set( 'Content-Type', $this->contentType );
