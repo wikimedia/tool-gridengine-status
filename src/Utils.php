@@ -6,7 +6,7 @@ class Utils {
 	private const RE_NUMBER = '/(\d+)/';
 
 	private static function splitForNaturalSort( string $input ): array {
-		return preg_split( self::RE_NUMBER, $input, PREG_SPLIT_DELIM_CAPTURE );
+		return preg_split( self::RE_NUMBER, $input, -1, PREG_SPLIT_DELIM_CAPTURE );
 	}
 
 	public static function naturalSort( string $first, string $second ): int {
@@ -26,7 +26,7 @@ class Utils {
 			$secondElem = array_shift( $secondSplit );
 
 			if ( is_numeric( $firstElem ) && is_numeric( $secondElem ) ) {
-				$result = $firstElem - $secondElem;
+				$result = (int)$firstElem - (int)$secondElem;
 			} else {
 				$result = strcmp( $firstElem, $secondElem );
 			}
