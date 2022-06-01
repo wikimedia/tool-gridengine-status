@@ -69,7 +69,7 @@ class StatusPage extends Controller {
 			$procs = (int)self::safeGet( $host, 'num_proc', 1 );
 
 			$hosts[$name] = [
-				'load' => (int)( ( $loadAvg * 100 ) / $procs ),
+				'load' => $procs > 0 ? (int)( ( $loadAvg * 100 ) / $procs ) : 0,
 				'mem' => (int)( self::safeGet( $host, 'mem', 0 ) * 100 ),
 				'vmem' => 0,
 				'jobs' => [],
