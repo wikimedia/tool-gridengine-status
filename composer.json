@@ -1,7 +1,7 @@
 {
 	"name": "tools/gridengine-status",
 	"license": "GPL-3.0+",
-	"homepage": "https://tools.wmflabs.org/gridengine-status/",
+	"homepage": "https://sge-status.toolforge.org/",
 	"require": {
 		"neitanod/forceutf8": "~2.0.0",
 		"wikimedia/slimapp": "~0.9",
