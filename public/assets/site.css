@@ -1,3 +1,9 @@
+#deprecation-note {
+  background-color: #fff9ea;
+  border: 1px solid #fc3;
+  padding: 0.5em;
+}
+
 .tablesort th[role=columnheader]:not(.no-sort) {
   cursor: pointer;
 }
